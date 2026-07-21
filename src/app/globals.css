@@ -6,6 +6,19 @@ body {
   padding: 0;
   margin: 0;
 }
+
+:root {
+  --mcc-navy: #1f3a5f;
+  --mcc-green: #2d6a4f;
+}
+
+.landing-hero {
+  background: linear-gradient(135deg, #eff7f2 0%, #f8fbff 100%);
+}
+
+.landing-copy {
+  max-width: 42rem;
+}
 .wrapper {
   box-sizing: border-box;
   min-height: 100%;

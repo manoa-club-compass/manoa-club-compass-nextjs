@@ -10,29 +10,16 @@ const NavBar: React.FC = () => {
   const pathName = usePathname();
   if (status === 'loading') return null;
   const currentUser = session?.user?.email;
-  const role = session?.user?.role;
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="white" expand="lg" className="border-bottom shadow-sm" sticky="top">
       <Container>
-        <Navbar.Brand href="/">Next.js Application Template</Navbar.Brand>
+        <Navbar.Brand href="/" className="fw-semibold text-primary">Mānoa Club Compass</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto justify-content-start">
-            {currentUser && (
-              <>
-                <Nav.Link id="add-stuff-nav" href="/add" active={pathName === '/add'}>
-                  Add Stuff
-                </Nav.Link>
-                <Nav.Link id="list-stuff-nav" href="/list" active={pathName === '/list'}>
-                  List Stuff
-                </Nav.Link>
-              </>
-            )}
-            {currentUser && role === 'ADMIN' && (
-              <Nav.Link id="admin-stuff-nav" href="/admin" active={pathName === '/admin'}>
-                Admin
-              </Nav.Link>
-            )}
+            <Nav.Link href="/clubs" active={pathName === '/clubs'}>Browse clubs</Nav.Link>
+            <Nav.Link href="/club-admin" active={pathName === '/club-admin'}>Club admin</Nav.Link>
+            <Nav.Link href="/admin-dashboard" active={pathName === '/admin-dashboard'}>Admin dashboard</Nav.Link>
           </Nav>
           <Nav>
             {session ? (
