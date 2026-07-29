@@ -21,7 +21,6 @@ const interestLabels: Record<string, string> = {
 };
 
 export default function ClubDetailsClient({ club }: { club: Club }) {
-  const interestLabel = interestLabels[club.interest ?? ''] ?? 'Uncategorized';
   const summary =
     club.description ?? 'This space will introduce the club, its mission, and the students it serves.';
   const aboutText =

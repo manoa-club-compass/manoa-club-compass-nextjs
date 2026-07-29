@@ -4,7 +4,9 @@ import PageHeading from '@/components/PageHeading';
 import { Container } from 'react-bootstrap';
 
 type Props = {
-  params: any;
+  params: {
+    id: string;
+  };
 };
 
 export default async function ClubDetailsPage({ params }: Props) {

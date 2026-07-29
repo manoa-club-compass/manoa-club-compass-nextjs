@@ -76,9 +76,13 @@ const ClubAdminScreen = () => {
       const data = await res.json();
       setClub(data);
       setMessage('Saved successfully.');
-    } catch (err: any) {
-      setMessage(err?.message ?? 'Save failed.');
-    } finally {
+    } catch (err: unknown) {
+  if (err instanceof Error) {
+    setMessage(err.message);
+  } else {
+    setMessage('Save failed.');
+  }
+} finally {
       setSaving(false);
     }
   };

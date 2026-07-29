@@ -8,12 +8,12 @@ if (process.env.NODE_ENV !== 'production') {
   // Prefer `.env.local` for developer overrides, but fall back to `.env`.
   try {
     dotenv.config({ path: '.env.local', override: true, quiet: true });
-  } catch (e) {
+  } catch {
     // ignore
   }
   try {
     dotenv.config({ path: '.env', override: false, quiet: true });
-  } catch (e) {
+  } catch {
     // ignore
   }
 }
