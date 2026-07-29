@@ -5,7 +5,17 @@ import { PrismaClient } from "@prisma/client";
 // Local development should use the Vercel environment pulled into .env.local,
 // even if the shell happens to have an unrelated DATABASE_URL exported.
 if (process.env.NODE_ENV !== 'production') {
-  dotenv.config({ path: '.env.local', override: true, quiet: true });
+  // Prefer `.env.local` for developer overrides, but fall back to `.env`.
+  try {
+    dotenv.config({ path: '.env.local', override: true, quiet: true });
+  } catch (e) {
+    // ignore
+  }
+  try {
+    dotenv.config({ path: '.env', override: false, quiet: true });
+  } catch (e) {
+    // ignore
+  }
 }
 
 const connectionString = process.env.DATABASE_URL;

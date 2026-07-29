@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 declare module 'next-auth' {
   interface Session {
     user: {
+      id?: string;
       role?: string;
     } & DefaultSession['user'];
   }
@@ -53,14 +54,19 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         ...session,
         user: {
           ...session.user,
+          id: (token as { id?: string }).id,
           role: (token as { role?: string }).role,
         },
       };
     },
     jwt({ token, user }) {
-      // user is type: { id?: string; email?: string; name?: string; role?: string }
-      if (user && typeof (user as { role?: string }).role === 'string') {
-        token.role = (user as { role?: string }).role;
+      if (user) {
+        if (typeof (user as { role?: string }).role === 'string') {
+          token.role = (user as { role?: string }).role;
+        }
+        if (typeof (user as { id?: string }).id === 'string') {
+          token.id = (user as { id?: string }).id;
+        }
       }
       return token;
     },

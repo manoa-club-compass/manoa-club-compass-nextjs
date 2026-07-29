@@ -23,6 +23,7 @@ model User {
   email    String @unique
   password String
   role     Role   @default(USER)
+  club     Club?
 }
 
 enum Condition {
@@ -38,4 +39,25 @@ model Stuff {
   quantity  Int
   condition Condition @default(good)
   owner     String
+}
+
+enum ClubInterest {
+  ACADEMIC_PROFESSIONAL
+  STEM
+  RECREATION
+  ARTS_CULTURE
+  COMMUNITY_SERVICE
+}
+
+model Club {
+  id           Int           @id @default(autoincrement())
+  name         String
+  description  String?
+  website      String?
+  contactEmail String?
+  interest     ClubInterest?
+  ownerId      Int?          @unique
+  owner        User?         @relation(fields: [ownerId], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
