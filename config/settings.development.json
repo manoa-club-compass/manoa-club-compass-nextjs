@@ -9,5 +9,14 @@
     { "name": "Bicycle", "quantity": 2, "owner": "student@manoa.edu", "condition": "poor" },
     { "name": "Banana", "quantity": 2, "owner": "superadmin@manoa.edu", "condition": "good" },
     { "name": "Boogie Board", "quantity": 2, "owner": "superadmin@manoa.edu", "condition": "excellent" }
+  ],
+  "defaultClubs": [
+    {
+      "name": "Mānoa Coding Club",
+      "description": "A default test club for development and demo purposes.",
+      "website": "https://example.com",
+      "contactEmail": "clubadmin@manoa.edu",
+      "interest": "STEM"
+    }
   ]
 }

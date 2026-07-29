@@ -1,11 +1,12 @@
 import { prisma } from './lib/prisma';
-import { Role, Condition } from '@prisma/client';
+import { Role, Condition, ClubInterest } from '@prisma/client';
 import { hash } from 'bcrypt';
 import * as config from '../config/settings.development.json';
 
 async function main() {
   console.log('Seeding the database');
   const password = await hash('changeme', 10);
+
   for (const account of config.defaultAccounts) {
     const role = account.role as Role || Role.USER;
     console.log(`  Creating user: ${account.email} with role: ${role}`);
@@ -21,12 +22,12 @@ async function main() {
         role,
       },
     });
-    // console.log(`  Created user: ${user.email} with role: ${user.role}`);
   }
+
   for (const data of config.defaultData) {
     const condition = data.condition as Condition || Condition.good;
     console.log(`  Adding stuff: ${JSON.stringify(data)}`);
-     
+
     await prisma.stuff.upsert({
       where: { id: config.defaultData.indexOf(data) + 1 },
       update: {},
@@ -37,6 +38,34 @@ async function main() {
         condition,
       },
     });
+  }
+
+  for (const clubData of config.defaultClubs) {
+    const interest = clubData.interest as ClubInterest | null | undefined;
+    const owner = clubData.contactEmail
+      ? await prisma.user.findUnique({ where: { email: clubData.contactEmail } })
+      : null;
+    const existingClub = await prisma.club.findFirst({ where: { name: clubData.name } });
+
+    const clubPayload = {
+      name: clubData.name,
+      description: clubData.description ?? null,
+      website: clubData.website ?? null,
+      contactEmail: clubData.contactEmail ?? null,
+      interest: interest ?? null,
+      ownerId: owner?.id ?? null,
+    };
+
+    if (existingClub) {
+      console.log(`  Updating club: ${clubData.name}`);
+      await prisma.club.update({
+        where: { id: existingClub.id },
+        data: clubPayload,
+      });
+    } else {
+      console.log(`  Creating club: ${clubData.name}`);
+      await prisma.club.create({ data: clubPayload });
+    }
   }
 }
 main()
