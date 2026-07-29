@@ -1,12 +1,13 @@
 {
   "defaultAccounts": [
-    { "email": "admin@foo.com", "password": "changeme", "role": "ADMIN" },
-    { "email": "john@foo.com", "password": "changeme" }
+    { "email": "superadmin@manoa.edu", "password": "changeme", "role": "SUPER_ADMIN" },
+    { "email": "clubadmin@manoa.edu", "password": "changeme", "role": "CLUB_ADMIN" },
+    { "email": "student@manoa.edu", "password": "changeme", "role": "USER" }
   ],
   "defaultData": [
-    { "name": "Basket", "quantity": 3, "owner": "john@foo.com", "condition": "excellent" },
-    { "name": "Bicycle", "quantity": 2, "owner": "john@foo.com", "condition": "poor" },
-    { "name": "Banana", "quantity": 2, "owner": "admin@foo.com", "condition": "good" },
-    { "name": "Boogie Board", "quantity": 2, "owner": "admin@foo.com", "condition": "excellent" }
+    { "name": "Basket", "quantity": 3, "owner": "student@manoa.edu", "condition": "excellent" },
+    { "name": "Bicycle", "quantity": 2, "owner": "student@manoa.edu", "condition": "poor" },
+    { "name": "Banana", "quantity": 2, "owner": "superadmin@manoa.edu", "condition": "good" },
+    { "name": "Boogie Board", "quantity": 2, "owner": "superadmin@manoa.edu", "condition": "excellent" }
   ]
 }

@@ -6,11 +6,7 @@ import { auth } from '@/lib/auth';
 
 const AdminPage = async () => {
   const session = await auth();
-  adminProtectedPage(
-    session as {
-      user: { email: string; id: string; name: string };
-    } | null,
-  );
+  adminProtectedPage(session);
   const stuff = await prisma.stuff.findMany({});
   const users = await prisma.user.findMany({});
 

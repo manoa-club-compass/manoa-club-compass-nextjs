@@ -10,6 +10,9 @@ const NavBar: React.FC = () => {
   const pathName = usePathname();
   if (status === 'loading') return null;
   const currentUser = session?.user?.email;
+  const role = session?.user?.role;
+  const canManageClubs = role === 'CLUB_ADMIN' || role === 'SUPER_ADMIN';
+  const isSuperAdmin = role === 'SUPER_ADMIN';
   return (
     <Navbar bg="white" expand="lg" className="border-bottom shadow-sm" sticky="top">
       <Container>
@@ -18,8 +21,8 @@ const NavBar: React.FC = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto justify-content-start">
             <Nav.Link href="/clubs" active={pathName === '/clubs'}>Browse clubs</Nav.Link>
-            <Nav.Link href="/club-admin" active={pathName === '/club-admin'}>Club admin</Nav.Link>
-            <Nav.Link href="/admin-dashboard" active={pathName === '/admin-dashboard'}>Admin dashboard</Nav.Link>
+            {canManageClubs && <Nav.Link href="/club-admin" active={pathName === '/club-admin'}>Club admin</Nav.Link>}
+            {isSuperAdmin && <Nav.Link href="/admin-dashboard" active={pathName === '/admin-dashboard'}>Admin dashboard</Nav.Link>}
           </Nav>
           <Nav>
             {session ? (
