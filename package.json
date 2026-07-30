@@ -18,7 +18,7 @@
     "@prisma/client": "^7.4.2",
     "bcrypt": "^6.0.0",
     "bootstrap": "^5.3.8",
-    "dotenv": "^17.3.1",
+    "dotenv": "^17.4.2",
     "next": "16.1.6",
     "next-auth": "^5.0.0-beta.30",
     "pg": "^8.19.0",
@@ -33,7 +33,7 @@
     "yup": "^1.7.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.58.2",
+    "@playwright/test": "^1.62.0",
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^20.19.35",
     "@types/pg": "^8.18.0",
@@ -42,6 +42,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "eslint-config-prettier": "^10.1.8",
+    "playwright": "^1.62.0",
     "prisma": "^7.4.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"

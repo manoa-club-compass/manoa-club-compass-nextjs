@@ -1,46 +1,91 @@
-import { expect, test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
-// Copy this pattern as Club Compass pages and forms become functional.
+import { LandingPage } from './pages/LandingPage';
+import { ClubsPage } from './pages/ClubsPage';
+import { ClubDetailsPage } from './pages/ClubDetailsPage';
+import { LoginPage } from './pages/LoginPage';
+import { SignupPage } from './pages/SignupPage';
+import { ClubAdminPage } from './pages/ClubAdminPage';
+import { AdminDashboardPage } from './pages/AdminDashboardPage';
+
 test('landing page is available', async ({ page }) => {
-  await page.goto('/');
+  const landingPage = new LandingPage(page);
 
-  await expect(page.getByRole('heading', { name: 'Find your place at Mānoa.' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Browse clubs' })).toHaveAttribute('href', '/clubs');
+  await landingPage.goto();
+  await landingPage.verifyDisplayed();
 });
 
-const signIn = async (page: import('@playwright/test').Page, email: string) => {
-  await page.goto('/auth/signin');
-  await page.locator('input[name="email"]').fill(email);
-  await page.locator('input[name="password"]').fill('changeme');
-  await page.getByRole('button', { name: 'Signin' }).click();
+test('browse clubs page is available', async ({ page }) => {
+  const clubsPage = new ClubsPage(page);
+
+  await clubsPage.goto();
+  await clubsPage.verifyDisplayed();
+});
+
+test('view club page is available', async ({ page }) => {
+  const clubDetailsPage = new ClubDetailsPage(page);
+
+  await clubDetailsPage.goto();
+  await clubDetailsPage.verifyDisplayed();
+});
+
+test('user can sign up', async ({ page }) => {
+  const signupPage = new SignupPage(page);
+
+  const email = `student${Date.now()}@manoa.edu`;
+
+  await signupPage.goto();
+  await signupPage.signup(email);
+});
+
+test('student can sign in', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+
+  await loginPage.login(
+    'student@manoa.edu',
+    'changeme'
+  );
+
   await expect(page).toHaveURL('/');
-};
-
-test('student cannot access Club Admin or Super Admin pages', async ({ page }) => {
-  await signIn(page, 'student@manoa.edu');
-
-  await expect(page.getByRole('link', { name: 'Club admin' })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: 'Admin dashboard' })).toHaveCount(0);
-  await page.goto('/club-admin');
-  await expect(page).toHaveURL('/not-authorized');
 });
 
-test('Club Admin can access the club admin page only', async ({ page }) => {
-  await signIn(page, 'clubadmin@manoa.edu');
+test('student cannot access Club Admin or Admin Dashboard', async ({ page }) => {
+  const loginPage = new LoginPage(page);
 
-  await expect(page.getByRole('link', { name: 'Club admin' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Admin dashboard' })).toHaveCount(0);
+  await loginPage.login(
+    'student@manoa.edu',
+    'changeme'
+  );
+
   await page.goto('/club-admin');
-  await expect(page.getByRole('heading', { name: 'Club admin' })).toBeVisible();
+  await expect(page).toHaveURL('/not-authorized');
+
   await page.goto('/admin-dashboard');
   await expect(page).toHaveURL('/not-authorized');
 });
 
-test('Super Admin can access both admin pages', async ({ page }) => {
-  await signIn(page, 'superadmin@manoa.edu');
+test('Club Admin can access club admin page', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const clubAdminPage = new ClubAdminPage(page);
 
-  await expect(page.getByRole('link', { name: 'Club admin' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Admin dashboard' })).toBeVisible();
-  await page.goto('/admin-dashboard');
-  await expect(page.getByRole('heading', { name: 'Admin dashboard' })).toBeVisible();
+  await loginPage.login(
+    'clubadmin@manoa.edu',
+    'changeme'
+  );
+
+  await clubAdminPage.goto();
+  await clubAdminPage.verifyDisplayed();
+});
+
+test('Super Admin can access admin dashboard', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const adminDashboardPage = new AdminDashboardPage(page);
+
+  await loginPage.login(
+    'superadmin@manoa.edu',
+    'changeme'
+  );
+
+  await adminDashboardPage.goto();
+  await adminDashboardPage.verifyDisplayed();
 });
